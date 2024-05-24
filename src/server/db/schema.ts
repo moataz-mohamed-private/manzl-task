@@ -43,8 +43,8 @@ export const content = createTable('content', {
 export const movies = createTable('movies', {
   id:serial('id').primaryKey(),
   contentId: integer('content_id').references(() => content.id).notNull(),
-  video: boolean('video').notNull(),
-  releaseDate: timestamp('release_date', { mode: 'date' }).notNull(),
+  video: boolean('video'),
+  releaseDate: timestamp('release_date', { mode: 'date' }),
 });
 
 // Define the shows table

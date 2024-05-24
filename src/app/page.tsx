@@ -1,5 +1,6 @@
 
-import { getMoviesLocalService } from "~/services/local";
+import { getMoviesLocalService , addToFav} from "~/services/local";
+import Button from "./_components/button";
 
 export default async function HomePage() {
 
@@ -11,7 +12,9 @@ export default async function HomePage() {
           movies.data.results.map((res:any) => 
           <div>
             {res.original_title}
-          <button style={{backgroundColor:"white",color:'black'}} >add to fav</button>
+           <div style={{backgroundColor:'white'}}>
+            <Button fun={res}></Button>
+           </div>
           </div>)
         }
     </main>
