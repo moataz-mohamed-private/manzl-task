@@ -1,13 +1,6 @@
-import axios from 'axios';
-import { PaginatedResponse } from '~/types/common.types';
-import { Movie } from '~/types/localApi.types';
+import axios from "axios";
+import { ContentType } from "~/types/localApi";
 
-export const getMoviesLocalService = async (page:number) : Promise<PaginatedResponse<Movie>> =>{
-
-    return axios.get(`${process.env.NEXTAUTH_URL}+api/movies?page=${page}`)
-}
-
-export const addToFav = async (res:any) =>{
- 
-    return axios.post('/api/favorites',res)
-}
+export const addToFav = async (tmdbId: number, type: ContentType) => {
+  return axios.post("/api/favorites", { tmdbId: tmdbId, type: type });
+};
