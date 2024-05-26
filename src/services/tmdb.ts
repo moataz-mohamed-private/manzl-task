@@ -1,6 +1,5 @@
 import { createAuthRequest } from "~/utils/apiUtils/authRequest";
-import { Movie} from "~/types/localApi";
-import {  MovieTMDB, showTMDB } from "~/types/tmdbApi";
+import { MovieTMDB, showTMDB } from "~/types/tmdbApi";
 import { PaginatedResponse } from "~/types/common";
 
 export const getMovies = async ({
@@ -20,6 +19,8 @@ export const getMovies = async ({
   region?: string;
   year?: string;
 }) => {
+  "use server";
+
   return createAuthRequest(
     process.env.TMBD_API_BASE_URL as string,
     process.env.TMBD_API_TOKEN,

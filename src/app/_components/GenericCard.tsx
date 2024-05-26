@@ -1,37 +1,59 @@
 import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
 import { getFormatedDate } from "~/utils/helpers";
-import  addIcon  from '~/assets/icons/ribbon-svgrepo-com.svg'
+import {
+  AddToFavorites,
+  RemoveFromFavorites,
+} from "~/server/queries/favorites";
+import { redirect } from "next/navigation";
+import { FavoriteButton } from "~/components/ui/favoriteButton";
 
 interface ContentCard {
   src: string;
   title: string;
   description?: string;
   date: string;
+  tmdbId: number;
+  favorited: boolean;
 }
-const ContentCard = ({ src, title, description, date }: ContentCard) => {
 
-    
+const ContentCard = async ({
+  src,
+  title,
+  description,
+  date,
+  tmdbId,
+  favorited,
+}: ContentCard) => {
   return (
-    <div className="h-96 relative rounded-xl overflow-hidden">
-        <div className="absolute left-1 top-1  z-10">
-        <img src={addIcon.src} width={60} style={{color:'white'}}/>
-        </div>
-       
-      <div className="h-5/6 w-full relative">
-        <Image src={src} layout="fill" objectFit="fill" alt="content" style={{aspectRatio:"13/24"}}/>
+    <div className="relative h-96 overflow-hidden rounded-xl">
+      <form
+        action={async () => {
+          "use server";
+          if (favorited) {
+            await RemoveFromFavorites(tmdbId);
+          } else {
+            await AddToFavorites(tmdbId, "movie");
+          }
+          redirect("/");
+        }}
+        method="POST"
+      >
+        <FavoriteButton favorited={favorited} />
+      </form>
+
+      <div className="relative h-5/6 w-full">
+        <Image
+          src={src}
+          layout="fill"
+          objectFit="fill"
+          alt="content"
+          style={{ aspectRatio: "13/24" }}
+        />
       </div>
-      <div className="h-1/6 w-full bg-card text-white p-1">
+      <div className="h-1/6 w-full bg-card p-1 text-white">
         <div>{title}</div>
         <div>{getFormatedDate(date)}</div>
-      </div>     
+      </div>
     </div>
   );
 };

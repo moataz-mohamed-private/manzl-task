@@ -1,19 +1,7 @@
-import { relations, sql } from "drizzle-orm";
-import {
-  index,
-  integer,
-  pgTableCreator,
-  primaryKey,
-  boolean,
-  decimal,
-  serial,
-  text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+import {sql} from "drizzle-orm";
+import {boolean, decimal, integer, pgTableCreator, serial, text, timestamp, varchar,} from "drizzle-orm/pg-core";
 
 // import { createSchema, table, column } from 'drizzle-orm';
-import { type AdapterAccount } from "next-auth/adapters";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -23,50 +11,56 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = pgTableCreator((name) => `manzl-task_${name}`);
 
-export const content = createTable('content', {
-  id: serial('id').primaryKey(),
-  adult: boolean('adult').notNull(),
-  backdropPath: varchar('backdrop_path', { length: 255 }),
-  genreIds: integer('genre_ids').array(),
-  originalLanguage: varchar('original_language', { length: 255 }).notNull(),
-  overview: text('overview'),
-  popularity: decimal('popularity'),
-  posterPath: varchar('poster_path', { length: 255 }),
-  voteAverage: decimal('vote_average'),
-  voteCount: integer('vote_count'),
-  name: varchar('name', { length: 255 }).notNull(),
-  mediaType: varchar('media_type', { length: 255 }).notNull(),
-  tmdbId: integer('tmdb_id').unique().notNull(),
+export const content = createTable("content", {
+  id: serial("id").primaryKey(),
+  adult: boolean("adult").notNull(),
+  backdropPath: varchar("backdrop_path", { length: 255 }),
+  genreIds: integer("genre_ids").array(),
+  originalLanguage: varchar("original_language", { length: 255 }).notNull(),
+  overview: text("overview"),
+  popularity: decimal("popularity"),
+  posterPath: varchar("poster_path", { length: 255 }),
+  voteAverage: decimal("vote_average"),
+  voteCount: integer("vote_count"),
+  name: varchar("name", { length: 255 }).notNull(),
+  mediaType: varchar("media_type", { length: 255 }).notNull(),
+  tmdbId: integer("tmdb_id").unique().notNull(),
 });
 
 // Define the movies table
-export const movies = createTable('movies', {
-  id:serial('id').primaryKey(),
-  contentId: integer('content_id').references(() => content.id).notNull(),
-  video: boolean('video'),
-  releaseDate: timestamp('release_date', { mode: 'date' }),
+export const movies = createTable("movies", {
+  id: serial("id").primaryKey(),
+  contentId: integer("content_id")
+    .references(() => content.id)
+    .notNull(),
+  video: boolean("video"),
+  releaseDate: timestamp("release_date", { mode: "date" }),
 });
 
 // Define the shows table
-export const shows = createTable('shows', {
-  id:serial('id').primaryKey(),
-  contentId: integer('content_id').references(() => content.id).notNull(),
-  originCountry: varchar('origin_country',{ length: 255 }).array().notNull(),
-  firstAirDate: timestamp('first_air_date', { mode: 'date' }).notNull(),
+export const shows = createTable("shows", {
+  id: serial("id").primaryKey(),
+  contentId: integer("content_id")
+    .references(() => content.id)
+    .notNull(),
+  originCountry: varchar("origin_country", { length: 255 }).array().notNull(),
+  firstAirDate: timestamp("first_air_date", { mode: "date" }).notNull(),
 });
 
-export const favorites = createTable('favorites', {
-  id: serial('id').primaryKey(),
-  contentId: integer('content_id').references(() => content.id).notNull(),
+export const favorites = createTable("favorites", {
+  id: serial("id").primaryKey(),
+  contentId: integer("content_id")
+    .references(() => content.id)
+    .notNull(),
+  tmdbId: integer("tmdb_id").unique().notNull(),
 });
 
 // Create schema
-export const schema = {
-  content,
-  movies,
-  shows,
-};
-
+// export const schema = {
+//   content,
+//   movies,
+//   shows,
+// };
 
 export const users = createTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
