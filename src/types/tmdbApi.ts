@@ -59,6 +59,12 @@ export interface Person {
   profile_path: string;
 }
 
+export enum ETMDBMoviesFilterParams {
+  with_genres = 'with_genres' ,
+  sort_by = 'sort_by',
+  primary_release_year = 'primary_release_year',
+  include_adult = 'include_adult'
+}
 export interface MovieTMDB {
   adult: boolean;
   backdrop_path: string;

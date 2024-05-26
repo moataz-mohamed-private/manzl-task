@@ -1,32 +1,47 @@
 import { createAuthRequest } from "~/utils/apiUtils/authRequest";
-import { MovieTMDB, showTMDB } from "~/types/tmdbApi";
+import { Genre, MovieTMDB, showTMDB } from "~/types/tmdbApi";
 import { PaginatedResponse } from "~/types/common";
 
-export const getMovies = async ({
-  queryString,
-  page,
-  includeAdult,
-  language,
-  primary_release_year,
-  region,
-  year,
-}: {
-  queryString?: string;
-  page?: string;
-  includeAdult?: boolean;
-  language?: string;
-  primary_release_year?: string;
-  region?: string;
-  year?: string;
-}) => {
+export const getMovies = async (
+  {
+    queryString,
+    page,
+    includeAdult,
+    language,
+    primary_release_year,
+    region,
+    year,
+  }: {
+    queryString?: string;
+    page?: string;
+    includeAdult?: boolean;
+    language?: string;
+    primary_release_year?: string;
+    region?: string;
+    year?: string;
+  },
+  searchParams: any,
+) => {
   "use server";
 
   return createAuthRequest(
     process.env.TMBD_API_BASE_URL as string,
     process.env.TMBD_API_TOKEN,
   ).get<PaginatedResponse<MovieTMDB>>(
-    `/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`,
+    `/discover/movie?include_adult=false&page=${page}`,
+    {
+      params: {
+        ...searchParams,
+      },
+    },
   );
+};
+
+export const getMoviesGenre = async () => {
+  return createAuthRequest(
+    process.env.TMBD_API_BASE_URL as string,
+    process.env.TMBD_API_TOKEN,
+  ).get<{genres:Genre[]}>("/genre/movie/list");
 };
 
 export const getMovieById = async (movieId: number) => {

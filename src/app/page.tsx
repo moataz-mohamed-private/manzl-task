@@ -1,20 +1,29 @@
-import { getMovies } from "~/services/tmdb";
+import { getMovies, getMoviesGenre } from "~/services/tmdb";
 import ContentCard from "./_components/GenericCard";
-import { getTmdbImg } from "~/utils/helpers";
+import { getTmdbImg, parseGenreToFilterOptions } from "~/utils/helpers";
 import { getFavoritedContent, getFavorites } from "~/server/queries/favorites";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { DropDown } from "~/app/_components/button";
+import Filters from "./_components/filtersTabs";
+import { MultiSelect } from "./_components/multiSelectDropDown";
+import { ETMDBMoviesFilterParams, Genre } from "~/types/tmdbApi";
 
-export default async function HomePage({ searchParams  } : {searchParams : any}) {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: any;
+}) {
   let { page } = searchParams;
+
   page = page ? page : "1";
 
-  const movies = await getMovies({ page: page });
+  const movies = await getMovies({ page: page }, searchParams);
 
   const favorites = await getFavorites();
   const favContent = await getFavoritedContent();
-  console.log(favContent);
+  const genres = await getMoviesGenre()
+  const filterOptions = parseGenreToFilterOptions(genres.data)
   const favsMap = new Map(favorites.map((obj) => [obj.tmdbId, obj.tmdbId]));
 
   return (
@@ -40,7 +49,14 @@ export default async function HomePage({ searchParams  } : {searchParams : any})
       <Link className={"bg-white"} href={"/?page=2"}>
         2-href
       </Link>
-      <div className="grid w-full grid-cols-5 gap-4 p-3">
+      <Filters>
+        <MultiSelect
+          filterOptions={filterOptions}
+          filterParam={ETMDBMoviesFilterParams.with_genres}
+          selectionPlaceHolder={'Select Genre'}
+        />
+      </Filters>
+      <div className="grid w-full gap-4 p-3 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
         {movies.data.results.map((res) => (
           <ContentCard
             src={getTmdbImg(res.poster_path)}

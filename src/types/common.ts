@@ -4,3 +4,8 @@ export interface PaginatedResponse<T> {
   total_pages: number;
   total_results: number;
 }
+
+export type filterOption = {
+  label:string;
+  value:string | number
+}

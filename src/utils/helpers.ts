@@ -1,6 +1,15 @@
+import { Genre } from "~/types/tmdbApi";
+
 export const getTmdbImg = (imgId: string): string => {
   return process.env.TMBD_IMGS_API_URL + imgId;
 };
+
+export const parseGenreToFilterOptions = ({genres}:{genres:Genre[]}) =>{
+  return genres?.map((genre:Genre) => ({
+    label: genre.name,
+    value: genre.id.toString(),
+  }))
+}
 
 export const getFormatedDate = (dateString: string) => {
   const date = new Date(dateString);
