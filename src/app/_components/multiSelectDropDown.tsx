@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
-
 import { Badge } from "~/components/ui/badge";
 import {
   Command,
@@ -14,46 +13,43 @@ import { Command as CommandPrimitive } from "cmdk";
 import router, { useRouter } from "next/navigation";
 import { ETMDBMoviesFilterParams } from "~/types/tmdbApi";
 import { filterOption } from "~/types/common";
+import { changeUrlParams } from "~/utils/helpers";
+import useDebounceEffect from "~/customeHooks/useDebounceEffect";
 
 export function MultiSelect({
   filterOptions,
   filterParam,
-  selectionPlaceHolder
+  selectionPlaceHolder,
+  singleSelectMode,
 }: {
-  filterOptions: filterOption[];
+  filterOptions: filterOption<number | string>[];
   filterParam: ETMDBMoviesFilterParams;
-  selectionPlaceHolder:string
+  selectionPlaceHolder: string;
+  singleSelectMode?: boolean;
 }) {
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<filterOption[]>([]);
-  const [selectables,setSelectables] = useState<filterOption[]>([])
+  const [selectables, setSelectables] = useState<
+    filterOption<number | string>[]
+  >([]);
   const [inputValue, setInputValue] = React.useState("");
+  const [selected, setSelected] = useState<filterOption<number | string>[]>([]);
 
-  useEffect(()=>{
-    if(filterOptions?.length > 0) setSelectables(filterOptions)
-  },[filterOptions])
-
-  useEffect(() => {
-    const existingParamsString = window.location.search;
-    const params = new URLSearchParams(existingParamsString);
-
-    if (selected.length === 0) {
-      params.delete(filterParam);
-    } else {
-      params.set(
-        filterParam,
-        selected.map((option) => option.value).join(","),
-      );
-    }
-
-    router.push("?" + params.toString());
+  useDebounceEffect(() => {
+    changeUrlParams<ETMDBMoviesFilterParams>(filterParam, selected, router);
   }, [selected]);
 
-  const handleUnselect = React.useCallback((option: filterOption) => {
-    setSelected((prev) => prev.filter((s) => s.value !== option.value));
-  }, []);
+  useEffect(() => {
+    if (filterOptions?.length > 0) setSelectables(filterOptions);
+  }, [filterOptions]);
+
+  const handleUnselect = React.useCallback(
+    (option: filterOption<number | string>) => {
+      setSelected((prev) => prev.filter((s) => s.value !== option.value));
+    },
+    [],
+  );
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -68,7 +64,6 @@ export function MultiSelect({
             });
           }
         }
-        // This is not a default behaviour of the <input /> field
         if (e.key === "Escape") {
           input.blur();
         }
@@ -76,12 +71,6 @@ export function MultiSelect({
     },
     [],
   );
-
-  // const selectables = filterOptions?.filter(
-  //   (option) => !selected.includes(option),
-  // );
-
-  console.log(selectables, selected, inputValue);
 
   return (
     <Command
@@ -139,7 +128,19 @@ export function MultiSelect({
                       }}
                       onSelect={() => {
                         setInputValue("");
-                        if(!(selected.filter(selectedOption => selectedOption.value === option.value).length > 0)) setSelected((prev) => [...prev, option]);
+                        if (
+                          !(
+                            selected.filter(
+                              (selectedOption) =>
+                                selectedOption.value === option.value,
+                            ).length > 0
+                          )
+                        ) {
+                          if (singleSelectMode) {
+                            setSelected([option]);
+                            setOpen(false);
+                          } else setSelected((prev) => [...prev, option]);
+                        }
                       }}
                       className={"cursor-pointer"}
                     >

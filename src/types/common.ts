@@ -4,8 +4,9 @@ export interface PaginatedResponse<T> {
   total_pages: number;
   total_results: number;
 }
+type OptionValue = string | number;
 
-export type filterOption = {
-  label:string;
-  value:string | number
-}
+export type filterOption<T extends OptionValue> = {
+  value: T;
+  label: string;
+};

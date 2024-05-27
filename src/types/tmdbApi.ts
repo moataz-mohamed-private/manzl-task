@@ -60,14 +60,29 @@ export interface Person {
 }
 
 export enum ETMDBMoviesFilterParams {
-  with_genres = 'with_genres' ,
-  sort_by = 'sort_by',
-  primary_release_year = 'primary_release_year',
-  include_adult = 'include_adult'
+  with_genres = "with_genres",
+  sort_by = "sort_by",
+  primary_release_year = "primary_release_year",
+  include_adult = "include_adult",
 }
+
 export interface MovieTMDB {
   adult: boolean;
   backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
+export interface MovieTMDBDetails extends Omit<MovieTMDB, "genre_ids"> {
   belongs_to_collection: {
     id: number;
     name: string;
@@ -77,58 +92,52 @@ export interface MovieTMDB {
   budget: number;
   genres: Genre[];
   homepage: string;
-  id: number;
   imdb_id: string;
   origin_country: string[];
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
   production_companies: ProductionCompany[];
   production_countries: string[];
-  release_date: string;
   revenue: number;
   runtime: number;
   spoken_languages: SpokenLanguage[];
   status: string;
   tagline: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
 }
 
 export interface showTMDB {
   adult: boolean;
   backdrop_path: string;
-  created_by: Person[];
-  episode_run_time: string[];
-  first_air_date: string;
-  genres: Genre[];
-  homepage: string;
+  genre_ids: number[];
   id: number;
-  in_production: boolean;
-  languages: string[];
-  last_air_date: string;
-  last_episode_to_air: Episode;
-  name: string;
-  next_episode_to_air: Episode;
-  networks: Network[];
-  number_of_episodes: number;
-  number_of_seasons: number;
   origin_country: string[];
   original_language: string;
   original_name: string;
   overview: string;
   popularity: number;
   poster_path: string;
+  first_air_date: string;
+  name: string;
+  vote_average: number;
+  vote_count: number;
+}
+
+export interface showTMDBDetails extends Omit<showTMDB, "genre_ids"> {
+  created_by: Person[];
+  episode_run_time: string[];
+  genres: Genre[];
+  homepage: string;
+  in_production: boolean;
+  languages: string[];
+  last_air_date: string;
+  last_episode_to_air: Episode;
+  next_episode_to_air: Episode;
+  networks: Network[];
+  number_of_episodes: number;
+  number_of_seasons: number;
+  origin_country: string[];
   production_companies: ProductionCompany[];
   seasons: Season[];
   spoken_languages: SpokenLanguage[];
   status: string;
   tagline: string;
   type: string;
-  vote_average: number;
-  vote_count: number;
 }

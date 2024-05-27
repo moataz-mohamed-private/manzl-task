@@ -8,6 +8,9 @@ import { DropDown } from "~/app/_components/button";
 import Filters from "./_components/filtersTabs";
 import { MultiSelect } from "./_components/multiSelectDropDown";
 import { ETMDBMoviesFilterParams, Genre } from "~/types/tmdbApi";
+import { DropdownSelection } from "./_components/dropDown";
+import { sortingFilterOptions } from "~/utils/staticData";
+import { Suspense } from "react";
 
 export default async function HomePage({
   searchParams,
@@ -18,12 +21,15 @@ export default async function HomePage({
 
   page = page ? page : "1";
 
-  const movies = await getMovies({ page: page }, searchParams);
+  const moviesResp = await getMovies({ page: page }, searchParams);
 
   const favorites = await getFavorites();
   const favContent = await getFavoritedContent();
-  const genres = await getMoviesGenre()
-  const filterOptions = parseGenreToFilterOptions(genres.data)
+  const genresResp = await getMoviesGenre();
+  const generesFilterOptions = parseGenreToFilterOptions(genresResp.data);
+  const genersMap = new Map(
+    genresResp.data.genres.map((obj) => [obj.id, obj.name]),
+  );
   const favsMap = new Map(favorites.map((obj) => [obj.tmdbId, obj.tmdbId]));
 
   return (
@@ -51,21 +57,30 @@ export default async function HomePage({
       </Link>
       <Filters>
         <MultiSelect
-          filterOptions={filterOptions}
+          filterOptions={generesFilterOptions}
           filterParam={ETMDBMoviesFilterParams.with_genres}
-          selectionPlaceHolder={'Select Genre'}
+          selectionPlaceHolder={"Select Genre"}
+        />
+        <DropdownSelection
+          filterOptions={sortingFilterOptions}
+          filterParam={ETMDBMoviesFilterParams.sort_by}
+          selectionPlaceHolder={"Sorting Options"}
         />
       </Filters>
       <div className="grid w-full gap-4 p-3 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
-        {movies.data.results.map((res) => (
-          <ContentCard
-            src={getTmdbImg(res.poster_path)}
-            title={res.title}
-            description={res.overview}
-            date={res.release_date}
-            tmdbId={res.id}
-            favorited={!!favsMap.get(res.id)}
-          />
+        {moviesResp.data.results.map((res) => (
+          <Suspense fallback={<div>Loading...</div>}>
+            <ContentCard
+              src={getTmdbImg(res.poster_path)}
+              title={res.title}
+              description={res.overview}
+              date={res.release_date}
+              tmdbId={res.id}
+              favorited={!!favsMap.get(res.id)}
+              genres={res.genre_ids.map((id) => genersMap.get(id) || "")}
+              key={res.id}
+            />
+          </Suspense>
         ))}
       </div>
     </main>
