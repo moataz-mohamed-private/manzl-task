@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { dynamicBlurDataUrl, getFormatedDate } from "~/utils/helpers";
-import {
-  AddToFavorites,
-  RemoveFromFavorites,
-} from "~/server/queries/favorites";
+// import {
+//   AddToFavorites,
+//   RemoveFromFavorites,
+// } from "~/server/queries/favorites";
 import { redirect } from "next/navigation";
 import { Badge } from "~/components/ui/badge";
 import { FavoriteButton } from "~/components/ui/favoriteButton";
@@ -30,23 +30,10 @@ const ContentCard = async ({
   const blurimageUrl = await dynamicBlurDataUrl(src);
   return (
     <div className="relative h-96 overflow-hidden rounded-xl">
-      <form
-        action={async () => {
-          "use server";
-          if (favorited) {
-            await RemoveFromFavorites(tmdbId);
-          } else {
-            await AddToFavorites(tmdbId, "movie");
-          }
-          redirect("/");
-        }}
-        method="POST"
-      >
-        <FavoriteButton favorited={favorited} />
-      </form>
-
+      <FavoriteButton favorited={favorited} tmdbId={tmdbId} key={tmdbId} />
       <div className="relative h-4/5 w-full">
         <Image
+          unoptimized
           key={src}
           src={src}
           quality={70}

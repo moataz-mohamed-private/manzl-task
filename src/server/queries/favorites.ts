@@ -1,12 +1,11 @@
-"server only";
+"use server";
 import { AddOrRetrieveContent } from "~/services/content";
 import { db } from "~/server/db";
-import { content, favorites, movies } from "~/server/db/schema";
+import { content, favorites, movies, shows } from "~/server/db/schema";
 import { ContentType } from "~/types/content";
-import { eq } from "drizzle-orm";
+import { eq, ilike } from "drizzle-orm";
 
 export const AddToFavorites = async (tmdbId: number, type: ContentType) => {
-  "use server";
   try {
     const contentId = await AddOrRetrieveContent(tmdbId, type as ContentType);
     await db.insert(favorites).values({ contentId: contentId, tmdbId: tmdbId });
@@ -15,33 +14,63 @@ export const AddToFavorites = async (tmdbId: number, type: ContentType) => {
   }
 };
 
-export const RemoveFromFavorites = async (tmdbId: number) => {
-  "use server";
-  try {
-    await db.delete(favorites).where(eq(favorites.tmdbId, tmdbId));
-  } catch (e) {
-    console.log(e);
+export const updateFavorites = async (
+  currentState: boolean,
+  tmdbId: number,
+  type: ContentType,
+) => {
+  if (currentState) {
+    try {
+      const contentId = await AddOrRetrieveContent(tmdbId, type);
+      await db
+        .insert(favorites)
+        .values({ contentId: contentId, tmdbId: tmdbId });
+    } catch (e) {
+      console.log(e);
+    }
+  } else {
+    try {
+      await db.delete(favorites).where(eq(favorites.tmdbId, tmdbId));
+    } catch (e) {
+      console.log(e);
+    }
   }
 };
 
 export const getFavorites = async () => {
   "use server";
-  return db.select().from(favorites);
+  let data;
+  try {
+    data = db.select().from(favorites);
+  } catch (e) {
+    console.log(e);
+  }
+  return data;
 };
 
-export const getFavoritedContent = async () => {
-  "use server";
-  return db
-    .select()
-    .from(favorites)
-    .innerJoin(content, eq(favorites.tmdbId, content.tmdbId));
-};
-
-export const getFavoritedMovies = async () => {
-  "use server";
+export const getFavoritedContent = async (searchString?: string) => {
   return db
     .select()
     .from(favorites)
     .innerJoin(content, eq(favorites.tmdbId, content.tmdbId))
-    .innerJoin(movies, eq(movies.contentId, content.id));
+    .innerJoin(movies, eq(movies.contentId, content.id))
+    .where(searchString ? ilike(content.name, searchString) : undefined);
+};
+
+export const getFavoritedMovies = async (searchString?: string) => {
+  return db
+    .select()
+    .from(favorites)
+    .innerJoin(content, eq(favorites.tmdbId, content.tmdbId))
+    .innerJoin(movies, eq(movies.contentId, content.id))
+    .where(searchString ? ilike(content.name, searchString) : undefined);
+};
+
+export const getFavoritedShows = async (searchString?: string) => {
+  return db
+    .select()
+    .from(favorites)
+    .innerJoin(content, eq(favorites.tmdbId, content.tmdbId))
+    .innerJoin(shows, eq(shows.contentId, content.id))
+    .where(searchString ? ilike(content.name, searchString) : undefined);
 };

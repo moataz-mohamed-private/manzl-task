@@ -63,7 +63,10 @@ export function DropdownSelection({
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             {filterOptions.map((option) => (
-              <DropdownMenuItem onSelect={() => setSelected([option])}>
+              <DropdownMenuItem
+                onSelect={() => setSelected([option])}
+                key={option.value}
+              >
                 {option.label}
               </DropdownMenuItem>
             ))}
