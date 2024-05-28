@@ -14,7 +14,7 @@ export const AddOrRetrieveContent = async (
     const dbObject = {
       adult: movieTMDB.adult,
       backdropPath: movieTMDB.backdrop_path,
-      genreIds: movieTMDB.genres.map((g) => g.id),
+      // genreIds: movieTMDB.genre_ids.map((g) => g.id),
       originalLanguage: movieTMDB.original_language,
       overview: movieTMDB.overview,
       popularity: movieTMDB.popularity.toString(),
@@ -60,7 +60,7 @@ export const AddOrRetrieveContent = async (
     const dbObject = {
       adult: showTMDB.adult,
       backdropPath: showTMDB.backdrop_path,
-      genreIds: showTMDB.genres.map((g) => g.id),
+      // genreIds: showTMDB.genres.map((g) => g.id),
       originalLanguage: showTMDB.original_language,
       overview: showTMDB.overview,
       popularity: showTMDB.popularity.toString(),
