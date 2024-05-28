@@ -6,16 +6,18 @@ await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 const config = {
-    images: {
-        remotePatterns: [
-          {
-            protocol: 'https',
-            hostname: 'image.tmdb.org',
-            port: '',
-            pathname: '/**',
-          },
-        ],
+  images: {
+    formats: ["image/avif", "image/webp"],
+
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "image.tmdb.org",
+        port: "",
+        pathname: "/**",
       },
+    ],
+  },
 };
 
 export default config;

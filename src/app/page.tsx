@@ -8,20 +8,22 @@ import { DropDown } from "~/app/_components/button";
 import Filters from "./_components/filtersTabs";
 import { MultiSelect } from "./_components/multiSelectDropDown";
 import { ETMDBMoviesFilterParams, Genre } from "~/types/tmdbApi";
-import { DropdownSelection } from "./_components/dropDown";
+import { DropdownSelection } from "./_components/dropDownSelect";
 import { sortingFilterOptions } from "~/utils/staticData";
 import { Suspense } from "react";
+import { PaginationComp } from "./_components/paginationSelect";
 
 export default async function HomePage({
   searchParams,
 }: {
   searchParams: any;
 }) {
+  console.log(searchParams);
   let { page } = searchParams;
 
   page = page ? page : "1";
 
-  const moviesResp = await getMovies({ page: page }, searchParams);
+  const moviesResp = await getMovies(searchParams);
 
   const favorites = await getFavorites();
   const favContent = await getFavoritedContent();
@@ -56,15 +58,23 @@ export default async function HomePage({
         2-href
       </Link>
       <Filters>
-        <MultiSelect
-          filterOptions={generesFilterOptions}
-          filterParam={ETMDBMoviesFilterParams.with_genres}
-          selectionPlaceHolder={"Select Genre"}
-        />
-        <DropdownSelection
-          filterOptions={sortingFilterOptions}
-          filterParam={ETMDBMoviesFilterParams.sort_by}
-          selectionPlaceHolder={"Sorting Options"}
+        <div className="flex">
+          <MultiSelect
+            filterOptions={generesFilterOptions}
+            filterParam={ETMDBMoviesFilterParams.with_genres}
+            selectionPlaceHolder={"Select Genre"}
+            selectedFilters={searchParams[ETMDBMoviesFilterParams.with_genres]}
+          />
+          <DropdownSelection
+            filterOptions={sortingFilterOptions}
+            filterParam={ETMDBMoviesFilterParams.sort_by}
+            selectionPlaceHolder={"Sorting Options"}
+            selectedFilters={searchParams[ETMDBMoviesFilterParams.sort_by]}
+          />
+        </div>
+        <PaginationComp
+          totalPages={moviesResp.data.total_pages}
+          currentPage={moviesResp.data.page}
         />
       </Filters>
       <div className="grid w-full gap-4 p-3 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5">

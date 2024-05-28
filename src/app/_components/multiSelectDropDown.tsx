@@ -13,7 +13,10 @@ import { Command as CommandPrimitive } from "cmdk";
 import router, { useRouter } from "next/navigation";
 import { ETMDBMoviesFilterParams } from "~/types/tmdbApi";
 import { filterOption } from "~/types/common";
-import { changeUrlParams } from "~/utils/helpers";
+import {
+  changeUrlParams,
+  parseSelectedFiltersToFilterOptions,
+} from "~/utils/helpers";
 import useDebounceEffect from "~/customeHooks/useDebounceEffect";
 
 export function MultiSelect({
@@ -21,18 +24,20 @@ export function MultiSelect({
   filterParam,
   selectionPlaceHolder,
   singleSelectMode,
+  selectedFilters,
 }: {
   filterOptions: filterOption<number | string>[];
   filterParam: ETMDBMoviesFilterParams;
   selectionPlaceHolder: string;
   singleSelectMode?: boolean;
+  selectedFilters: string;
 }) {
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
-  const [selectables, setSelectables] = useState<
-    filterOption<number | string>[]
-  >([]);
+  // const [filterOptions, setSelectables] = useState<
+  //   filterOption<number | string>[]
+  // >([]);
   const [inputValue, setInputValue] = React.useState("");
   const [selected, setSelected] = useState<filterOption<number | string>[]>([]);
 
@@ -41,8 +46,12 @@ export function MultiSelect({
   }, [selected]);
 
   useEffect(() => {
-    if (filterOptions?.length > 0) setSelectables(filterOptions);
-  }, [filterOptions]);
+    // if (filterOptions?.length > 0) setSelectables(filterOptions);
+    if (selectedFilters)
+      setSelected(
+        parseSelectedFiltersToFilterOptions(selectedFilters, filterOptions),
+      );
+  }, []);
 
   const handleUnselect = React.useCallback(
     (option: filterOption<number | string>) => {
@@ -115,10 +124,10 @@ export function MultiSelect({
       </div>
       <div className="relative mt-2">
         <CommandList>
-          {open && selectables.length > 0 ? (
+          {open && filterOptions.length > 0 ? (
             <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
               <CommandGroup className="h-full overflow-auto">
-                {selectables.map((option) => {
+                {filterOptions.map((option) => {
                   return (
                     <CommandItem
                       key={option.value}

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getFormatedDate } from "~/utils/helpers";
+import { dynamicBlurDataUrl, getFormatedDate } from "~/utils/helpers";
 import {
   AddToFavorites,
   RemoveFromFavorites,
@@ -27,6 +27,7 @@ const ContentCard = async ({
   favorited,
   genres,
 }: ContentCard) => {
+  const blurimageUrl = await dynamicBlurDataUrl(src);
   return (
     <div className="relative h-96 overflow-hidden rounded-xl">
       <form
@@ -46,11 +47,15 @@ const ContentCard = async ({
 
       <div className="relative h-4/5 w-full">
         <Image
+          key={src}
           src={src}
-          layout="fill"
-          objectFit="fill"
+          quality={70}
+          blurDataURL={blurimageUrl}
+          placeholder="blur"
+          fill
+          sizes="(max-width: 768px) 90vw, (max-width: 1200px) 40vw, 23vw"
           alt="content"
-          style={{ aspectRatio: "13/24" }}
+          style={{ width: "100%" }}
         />
       </div>
       <div className="h-1/5 w-full bg-card  p-1 text-sm text-white">

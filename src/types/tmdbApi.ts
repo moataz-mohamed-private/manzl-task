@@ -64,6 +64,7 @@ export enum ETMDBMoviesFilterParams {
   sort_by = "sort_by",
   primary_release_year = "primary_release_year",
   include_adult = "include_adult",
+  page = "page",
 }
 
 export interface MovieTMDB {

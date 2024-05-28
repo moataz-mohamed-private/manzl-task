@@ -1,4 +1,5 @@
 export const sortingFilterOptions = [
+  //   { label: "None", value: "" },
   { label: "Most popular", value: "popularity.desc" },
   { label: "Least popular", value: "popularity.asc" },
   { label: "Highest revenue", value: "revenue.desc" },
