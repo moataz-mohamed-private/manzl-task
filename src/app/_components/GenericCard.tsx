@@ -36,6 +36,7 @@ const ContentCard = async ({
       />
       <div className="relative flex h-full w-full flex-col justify-end overflow-hidden rounded-lg p-5 shadow-lg shadow-black/30 transition">
         <Image
+          unoptimized
           key={src}
           src={src}
           quality={70}
