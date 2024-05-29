@@ -46,7 +46,7 @@ export const AddOrRetrieveContent = async (
           releaseDate: new Date(movieTMDB.release_date),
         })
         .onConflictDoUpdate({
-          target: movies.id,
+          target: movies.contentId,
           set: {
             contentId: contentId,
             productionCompanies: movieTMDB.production_companies,
@@ -95,7 +95,7 @@ export const AddOrRetrieveContent = async (
           firstAirDate: new Date(showTMDB.first_air_date),
         })
         .onConflictDoUpdate({
-          target: shows.id,
+          target: shows.contentId,
           set: {
             contentId: contentId,
             networks: showTMDB.networks,
