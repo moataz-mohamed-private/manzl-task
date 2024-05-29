@@ -1,3 +1,4 @@
+"use server";
 import { AddOrRetrieveContent } from "~/server/queries/content";
 import { db } from "~/server/db";
 import { content, favorites, movies, shows } from "~/server/db/schema";

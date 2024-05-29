@@ -1,3 +1,4 @@
+"use server";
 import { db } from "~/server/db";
 import { ContentType } from "~/types/contentApi";
 import { getMovieById, getShowById } from "~/services/tmdb";
