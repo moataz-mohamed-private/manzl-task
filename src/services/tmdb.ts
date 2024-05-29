@@ -1,5 +1,7 @@
+"use server";
 import { createAuthRequest } from "~/utils/apiUtils/authRequest";
 import {
+  ETMDBMoviesFilterParams,
   Genre,
   MovieTMDB,
   MovieTMDBDetails,
@@ -8,28 +10,9 @@ import {
 } from "~/types/tmdbApi";
 import { PaginatedResponse } from "~/types/common";
 
-export const getMovies = async (
-  // {
-  //   queryString,
-  //   page,
-  //   includeAdult,
-  //   language,
-  //   primary_release_year,
-  //   region,
-  //   year,
-  // }: {
-  //   queryString?: string;
-  //   page?: string;
-  //   includeAdult?: boolean;
-  //   language?: string;
-  //   primary_release_year?: string;
-  //   region?: string;
-  //   year?: string;
-  // },
-  searchParams: any,
-) => {
-  "use server";
-
+export const getMovies = async (searchParams: {
+  [key in ETMDBMoviesFilterParams]?: string;
+}) => {
   return createAuthRequest(
     process.env.TMBD_API_BASE_URL as string,
     process.env.TMBD_API_TOKEN,
@@ -40,28 +23,9 @@ export const getMovies = async (
   });
 };
 
-export const getShows = async (
-  // {
-  //   queryString,
-  //   page,
-  //   includeAdult,
-  //   language,
-  //   primary_release_year,
-  //   region,
-  //   year,
-  // }: {
-  //   queryString?: string;
-  //   page?: string;
-  //   includeAdult?: boolean;
-  //   language?: string;
-  //   primary_release_year?: string;
-  //   region?: string;
-  //   year?: string;
-  // },
-  searchParams: any,
-) => {
-  "use server";
-
+export const getShows = async (searchParams: {
+  [key in ETMDBMoviesFilterParams]?: string;
+}) => {
   return createAuthRequest(
     process.env.TMBD_API_BASE_URL as string,
     process.env.TMBD_API_TOKEN,

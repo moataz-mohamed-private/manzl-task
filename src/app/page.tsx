@@ -1,18 +1,13 @@
 import { getMovies, getMoviesGenre } from "~/services/tmdb";
 import ContentCard from "./_components/GenericCard";
 import { getTmdbImg, parseGenreToFilterOptions } from "~/utils/helpers";
-import { getFavoritedContent, getFavorites } from "~/server/queries/favorites";
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import { DropDown } from "~/app/_components/button";
+import { getFavorites } from "~/server/queries/favorites";
 import Filters from "./_components/filtersTabs";
 import { MultiSelect } from "./_components/multiSelectDropDown";
-import { ETMDBMoviesFilterParams, Genre } from "~/types/tmdbApi";
+import { ETMDBMoviesFilterParams } from "~/types/tmdbApi";
 import { DropdownSelection } from "./_components/dropDownSelect";
 import { sortingFilterOptions } from "~/utils/staticData";
-import { Suspense } from "react";
 import { PaginationComp } from "./_components/paginationSelect";
-import NavMenu from "./_components/navMenu";
 
 export default async function HomePage({
   searchParams,
@@ -21,7 +16,6 @@ export default async function HomePage({
 }) {
   const moviesResp = await getMovies(searchParams);
   const favorites = await getFavorites();
-  const favContent = await getFavoritedContent();
   const genresResp = await getMoviesGenre();
   const generesFilterOptions = parseGenreToFilterOptions(genresResp.data);
   const genersMap = new Map(

@@ -12,14 +12,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { Genre, Network, ProductionCompany } from "~/types/tmdbApi";
 
-// import { createSchema, table, column } from 'drizzle-orm';
-
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
 export const createTable = pgTableCreator((name) => `manzl-task_${name}`);
 
 export const content = createTable("content", {
@@ -38,7 +30,6 @@ export const content = createTable("content", {
   tmdbId: integer("tmdb_id").unique().notNull(),
 });
 
-// Define the movies table
 export const movies = createTable("movies", {
   id: serial("id").primaryKey(),
   contentId: integer("content_id")
@@ -53,7 +44,6 @@ export const movies = createTable("movies", {
   releaseDate: timestamp("release_date", { mode: "date" }),
 });
 
-// Define the shows table
 export const shows = createTable("shows", {
   id: serial("id").primaryKey(),
   contentId: integer("content_id")

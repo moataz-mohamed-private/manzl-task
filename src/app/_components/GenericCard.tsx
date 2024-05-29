@@ -1,12 +1,7 @@
 import Image from "next/image";
 import { dynamicBlurDataUrl, getFormatedDate } from "~/utils/helpers";
-// import {
-//   AddToFavorites,
-//   RemoveFromFavorites,
-// } from "~/server/queries/favorites";
-import { redirect } from "next/navigation";
 import { Badge } from "~/components/ui/badge";
-import { FavoriteButton } from "~/components/ui/favoriteButton";
+import { FavoriteButton } from "~/app/_components/favoriteButton";
 import { ContentType } from "~/types/contentApi";
 
 interface ContentCard {
@@ -51,7 +46,7 @@ const ContentCard = async ({
           alt="content"
           style={{ width: "100%" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black "></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black"></div>
         <div className="isolate space-y-2">
           <div className="flex items-center space-x-2 text-xs text-gray-200">
             <time>{getFormatedDate(date)}</time>

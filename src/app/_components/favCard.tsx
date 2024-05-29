@@ -1,15 +1,7 @@
 import Image from "next/image";
-import { movies } from "~/server/db/schema";
 import { Movie, Show } from "~/types/contentApi";
-import { Genre } from "~/types/tmdbApi";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import {
-  dynamicBlurDataUrl,
-  getFormatedDate,
-  getTmdbImg,
-} from "~/utils/helpers";
-import { TrashIcon } from "lucide-react";
-import { deletFavorites } from "~/server/queries/favorites";
+import { dynamicBlurDataUrl, getTmdbImg } from "~/utils/helpers";
+import { deleteFavorite } from "~/server/queries/favorites";
 
 interface favCard {
   src: string;
@@ -104,7 +96,7 @@ export async function FavCard({
             <form
               action={async () => {
                 "use server";
-                await deletFavorites(tmdbId);
+                await deleteFavorite(tmdbId);
               }}
             >
               <button

@@ -8,12 +8,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import useDebounceEffect from "~/customeHooks/useDebounceEffect";
@@ -45,9 +40,13 @@ export function DropdownSelection({
       );
   }, []);
 
-  useDebounceEffect(() => {
-    changeUrlParams(filterParam, selected, router);
-  }, [selected]);
+  useDebounceEffect(
+    () => {
+      changeUrlParams(filterParam, selected, router);
+    },
+    [selected],
+    { wait: 300, runOnMount: false },
+  );
 
   return (
     <div className="text-md p-1">

@@ -10,7 +10,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "~/components/ui/pagination";
-import useDebounceEffect from "~/customeHooks/useDebounceEffect";
 import { filterOption } from "~/types/common";
 import { ETMDBMoviesFilterParams } from "~/types/tmdbApi";
 import { changeUrlParams } from "~/utils/helpers";
@@ -129,48 +128,3 @@ export const PaginationComp: React.FC<PaginationProps> = ({
     </Pagination>
   );
 };
-
-// export function PaginationSelect({ filterParam , page , totalPages}) {
-//   const router = useRouter();
-//   const [pagesOptions,setPagesOptions] = useState<filterOption<number | string>[]>([])
-//   const [selected, setSelected] = useState<filterOption<number | string>[]>([]);
-
-//   useEffect(()=>{
-//     if(page+1 <= totalPages){
-
-//     }
-//   },[])
-
-//   useDebounceEffect(() => {
-//     changeUrlParams<ETMDBMoviesFilterParams>(filterParam, selected, router);
-//   }, [selected]);
-
-//   return (
-//     <Pagination>
-//       <PaginationContent>
-//         <PaginationItem>
-//           <PaginationPrevious href="#" />
-//         </PaginationItem>
-//         <PaginationItem>
-//           <PaginationLink href="#">1</PaginationLink>
-//         </PaginationItem>
-//         <PaginationItem>
-//           <PaginationLink href="#" isActive>
-//             2
-//           </PaginationLink>
-//         </PaginationItem>
-//         <PaginationItem>
-//           <PaginationLink href="#">3</PaginationLink>
-//         </PaginationItem>
-//         <PaginationItem>
-//           <PaginationEllipsis />
-//         </PaginationItem>
-//         <PaginationItem>
-//           <PaginationNext href="#" />
-//         </PaginationItem>
-//       </PaginationContent>
-//     </Pagination>
-//   );
-// }
-
-// export default PaginationSelect;

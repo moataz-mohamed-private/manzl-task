@@ -35,18 +35,18 @@ export function MultiSelect({
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
-  // const [filterOptions, setSelectables] = useState<
-  //   filterOption<number | string>[]
-  // >([]);
   const [inputValue, setInputValue] = React.useState("");
   const [selected, setSelected] = useState<filterOption<number | string>[]>([]);
 
-  useDebounceEffect(() => {
-    changeUrlParams<ETMDBMoviesFilterParams>(filterParam, selected, router);
-  }, [selected]);
+  useDebounceEffect(
+    () => {
+      changeUrlParams<ETMDBMoviesFilterParams>(filterParam, selected, router);
+    },
+    [selected],
+    { wait: 300, runOnMount: false },
+  );
 
   useEffect(() => {
-    // if (filterOptions?.length > 0) setSelectables(filterOptions);
     if (selectedFilters)
       setSelected(
         parseSelectedFiltersToFilterOptions(selectedFilters, filterOptions),
@@ -110,7 +110,6 @@ export function MultiSelect({
               </Badge>
             );
           })}
-          {/* Avoid having the "Search" Icon */}
           <CommandPrimitive.Input
             ref={inputRef}
             value={inputValue}

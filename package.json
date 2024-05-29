@@ -34,6 +34,7 @@
     "postgres": "^3.4.3",
     "react": "19.0.0-rc-935180c7e0-20240524",
     "react-dom": "19.0.0-rc-935180c7e0-20240524",
+    "server-only": "^0.0.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "vercel": "^34.2.0",

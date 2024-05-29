@@ -8,7 +8,7 @@ export const useDebounceAction = (func: Function) => {
       clearTimeout(timeoutRef.current);
     }
 
-    timeoutRef.current = setTimeout(func, 200);
+    timeoutRef.current = setTimeout(func, 300);
   };
 
   return debouncedFunc;
