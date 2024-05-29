@@ -29,6 +29,7 @@ export async function FavCard({
       return movies.productionCompanies?.map((company) => (
         <div className="flex">
           <Image
+            unoptimized
             src={getTmdbImg(company.logo_path)}
             alt="company"
             width={25}
@@ -43,6 +44,7 @@ export async function FavCard({
       return shows.networks?.map((network) => (
         <div className="flex">
           <Image
+            unoptimized
             src={getTmdbImg(network.logo_path)}
             alt="company"
             width={25}
@@ -61,6 +63,7 @@ export async function FavCard({
         <div className="flex-none">
           <div className="h-72 w-56 -translate-y-2 transform rounded-md border-4 border-gray-300 shadow-2xl shadow-lg">
             <Image
+              unoptimized
               key={src}
               src={src}
               quality={70}
