@@ -29,9 +29,9 @@ const ContentCard = async ({
 }: ContentCard) => {
   const blurimageUrl = await dynamicBlurDataUrl(src);
   return (
-    <div className="relative h-96 overflow-hidden rounded-xl">
+    <div className="relative grid h-96 place-items-center overflow-hidden rounded-xl brightness-150">
       <FavoriteButton favorited={favorited} tmdbId={tmdbId} key={tmdbId} />
-      <div className="relative h-4/5 w-full">
+      <div className="relative flex h-full w-full flex-col justify-end overflow-hidden rounded-lg p-5 shadow-lg shadow-black/30 transition">
         <Image
           unoptimized
           key={src}
@@ -44,23 +44,28 @@ const ContentCard = async ({
           alt="content"
           style={{ width: "100%" }}
         />
-      </div>
-      <div className="h-1/5 w-full bg-card  p-1 text-sm text-white">
-        <div>
-          <div className="truncate font-sans">{title}</div>
-          <div className="pl-1 font-mono text-xs">{getFormatedDate(date)}</div>
-        </div>
-        <div className="align-center col-span-2 flex justify-end">
-          {genres.map(
-            (genre, i) =>
-              i <= 2 && (
-                <div>
-                  <Badge className="m-1 truncate rounded-xl bg-white text-black">
-                    {genre}
-                  </Badge>
-                </div>
-              ),
-          )}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black "></div>
+        <div className="isolate space-y-2">
+          <div className="flex items-center space-x-2 text-xs text-gray-200">
+            <time>{getFormatedDate(date)}</time>
+            <span>∙</span>
+            <figure className="flex items-center space-x-1">
+              <figcaption className="flex">
+                {" "}
+                {genres.map(
+                  (genre, i) =>
+                    i <= 1 && (
+                      <div>
+                        <Badge className="m-1 truncate rounded-xl bg-white text-black">
+                          {genre}
+                        </Badge>
+                      </div>
+                    ),
+                )}
+              </figcaption>
+            </figure>
+          </div>
+          <h2 className="text-sm font-bold text-white">{title}</h2>
         </div>
       </div>
     </div>

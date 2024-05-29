@@ -1,33 +1,31 @@
-import { getMovies, getMoviesGenre } from "~/services/tmdb";
-import ContentCard from "./_components/GenericCard";
+import { getMovies, getMoviesGenre, getShows } from "~/services/tmdb";
+import ContentCard from "../_components/GenericCard";
 import { getTmdbImg, parseGenreToFilterOptions } from "~/utils/helpers";
 import { getFavoritedContent, getFavorites } from "~/server/queries/favorites";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { DropDown } from "~/app/_components/button";
-import Filters from "./_components/filtersTabs";
-import { MultiSelect } from "./_components/multiSelectDropDown";
+import Filters from "../_components/filtersTabs";
+import { MultiSelect } from "../_components/multiSelectDropDown";
 import { ETMDBMoviesFilterParams, Genre } from "~/types/tmdbApi";
-import { DropdownSelection } from "./_components/dropDownSelect";
+import { DropdownSelection } from "../_components/dropDownSelect";
 import { sortingFilterOptions } from "~/utils/staticData";
 import { Suspense } from "react";
-import { PaginationComp } from "./_components/paginationSelect";
-import NavMenu from "./_components/navMenu";
+import { PaginationComp } from "../_components/paginationSelect";
 
-export default async function HomePage({
+export default async function ShowsPage({
   searchParams,
 }: {
   searchParams: any;
 }) {
-  const moviesResp = await getMovies(searchParams);
+  const moviesResp = await getShows(searchParams);
   const favorites = await getFavorites();
-  const favContent = await getFavoritedContent();
+  const favsMap = new Map(favorites?.map((obj) => [obj.tmdbId, obj.tmdbId]));
   const genresResp = await getMoviesGenre();
   const generesFilterOptions = parseGenreToFilterOptions(genresResp.data);
   const genersMap = new Map(
     genresResp.data.genres.map((obj) => [obj.id, obj.name]),
   );
-  const favsMap = new Map(favorites?.map((obj) => [obj.tmdbId, obj.tmdbId]));
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start bg-background">
@@ -55,9 +53,9 @@ export default async function HomePage({
         {moviesResp.data.results.map((res) => (
           <ContentCard
             src={getTmdbImg(res.poster_path)}
-            title={res.title}
+            title={res.name}
             description={res.overview}
-            date={res.release_date}
+            date={res.first_air_date}
             tmdbId={res.id}
             favorited={!!favsMap.get(res.id)}
             genres={res.genre_ids.map((id) => genersMap.get(id) || "")}
