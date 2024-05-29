@@ -5,6 +5,7 @@ import { content, favorites, movies, shows } from "~/server/db/schema";
 import { ContentType } from "~/types/contentApi";
 import { eq, ilike } from "drizzle-orm";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export const AddToFavorites = async (tmdbId: number, type: ContentType) => {
   try {
@@ -36,6 +37,7 @@ export const updateFavorites = async (
       console.log(e);
     }
   }
+  revalidatePath("/myList");
 };
 
 export const deleteFavorite = async (tmdbId: number) => {
