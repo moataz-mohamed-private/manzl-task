@@ -4,18 +4,21 @@ import FavIcon from "~/assets/icons/favIcon";
 import { useState } from "react";
 import { updateFavorites } from "~/server/queries/favorites";
 import { useDebounceAction } from "~/customeHooks/UseDebounceAction";
+import { ContentType } from "~/types/contentApi";
 
 export const FavoriteButton = ({
   favorited,
   tmdbId,
+  type,
 }: {
   favorited: boolean;
   tmdbId: number;
+  type: ContentType;
 }) => {
   const [favoritedState, updateFavorited] = useState(favorited);
 
   const debouncedFavorite = useDebounceAction(() => {
-    updateFavorites(!favoritedState, tmdbId, "movie");
+    updateFavorites(!favoritedState, tmdbId, type);
   });
 
   return (

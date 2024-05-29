@@ -54,6 +54,7 @@ export default async function HomePage({
       <div className="grid w-full gap-4 p-3 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
         {moviesResp.data.results.map((res) => (
           <ContentCard
+            type={"movie"}
             src={getTmdbImg(res.poster_path)}
             title={res.title}
             description={res.overview}

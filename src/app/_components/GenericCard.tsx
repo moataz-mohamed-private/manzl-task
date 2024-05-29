@@ -7,6 +7,7 @@ import { dynamicBlurDataUrl, getFormatedDate } from "~/utils/helpers";
 import { redirect } from "next/navigation";
 import { Badge } from "~/components/ui/badge";
 import { FavoriteButton } from "~/components/ui/favoriteButton";
+import { ContentType } from "~/types/contentApi";
 
 interface ContentCard {
   src: string;
@@ -15,6 +16,7 @@ interface ContentCard {
   date: string;
   tmdbId: number;
   favorited: boolean;
+  type: ContentType;
   genres: string[] | [];
 }
 
@@ -26,14 +28,19 @@ const ContentCard = async ({
   tmdbId,
   favorited,
   genres,
+  type,
 }: ContentCard) => {
   const blurimageUrl = await dynamicBlurDataUrl(src);
   return (
     <div className="relative grid h-96 place-items-center overflow-hidden rounded-xl brightness-150">
-      <FavoriteButton favorited={favorited} tmdbId={tmdbId} key={tmdbId} />
+      <FavoriteButton
+        favorited={favorited}
+        tmdbId={tmdbId}
+        key={tmdbId}
+        type={type}
+      />
       <div className="relative flex h-full w-full flex-col justify-end overflow-hidden rounded-lg p-5 shadow-lg shadow-black/30 transition">
         <Image
-          unoptimized
           key={src}
           src={src}
           quality={70}

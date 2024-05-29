@@ -49,13 +49,16 @@ export async function FavCard({
     }
     if (shows) {
       return shows.networks?.map((network) => (
-        <Image
-          src={getTmdbImg(network.logo_path)}
-          alt="company"
-          width={25}
-          height={20}
-          objectFit="cover"
-        />
+        <div className="flex">
+          <Image
+            src={getTmdbImg(network.logo_path)}
+            alt="company"
+            width={25}
+            height={20}
+            objectFit="cover"
+          />
+          <div className="text-sm">{network.name}</div>
+        </div>
       ));
     }
   };
@@ -66,7 +69,6 @@ export async function FavCard({
         <div className="flex-none">
           <div className="h-72 w-56 -translate-y-2 transform rounded-md border-4 border-gray-300 shadow-2xl shadow-lg">
             <Image
-              unoptimized
               key={src}
               src={src}
               quality={70}
@@ -86,9 +88,8 @@ export async function FavCard({
           </p>
           <hr className="hr-text" data-content="" />
           <div className="text-md my-2 flex justify-around px-4">
-            {/* <span className="flex bg-white font-bold"> */}
             {getProductionOrNetwork()}
-            {/* </span> */}
+
             <span className="font-bold"></span>
           </div>
           <p className="my-4 hidden px-4 text-left text-sm md:block">

@@ -52,6 +52,7 @@ export default async function ShowsPage({
       <div className="grid w-full gap-4 p-3 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
         {moviesResp.data.results.map((res) => (
           <ContentCard
+            type={"show"}
             src={getTmdbImg(res.poster_path)}
             title={res.name}
             description={res.overview}
