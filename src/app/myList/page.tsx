@@ -2,6 +2,8 @@ import { getFavoritedContent } from "~/server/queries/favorites";
 import { getTmdbImg } from "~/utils/helpers";
 import FavCard from "../_components/favCard";
 
+export const dynamic = "force-dynamic";
+
 export default async function MyList() {
   const myList = await getFavoritedContent();
 
