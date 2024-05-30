@@ -7,7 +7,7 @@ interface favCard {
   src: string;
   title: string;
   description?: string;
-  date: string;
+  mediaType: string;
   movies: Movie | null;
   shows: Show | null;
   popularity: string;
@@ -18,7 +18,7 @@ export async function FavCard({
   src,
   title,
   description,
-  date,
+  mediaType,
   movies,
   shows,
   popularity,
@@ -78,8 +78,8 @@ export async function FavCard({
         </div>
 
         <div className="flex-col text-gray-300">
-          <p className="pt-4 text-2xl font-bold">
-            {title} {date}
+          <p className="pl-1 pt-4 text-2xl font-bold">
+            {title} {`(${mediaType})`}
           </p>
           <hr className="hr-text" data-content="" />
           <div className="text-md my-2 flex justify-around px-4">

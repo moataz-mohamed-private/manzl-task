@@ -17,7 +17,7 @@ export default async function MyList() {
           src={getTmdbImg(res.content.backdropPath)}
           title={res.content.name}
           description={res.content.overview as string}
-          date={res.content.mediaType}
+          mediaType={res.content.mediaType}
           tmdbId={res.content.tmdbId}
         />
       ))}

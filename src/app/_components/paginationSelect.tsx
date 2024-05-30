@@ -10,6 +10,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "~/components/ui/pagination";
+import useDebounceEffect from "~/customeHooks/useDebounceEffect";
 import { filterOption } from "~/types/common";
 import { ETMDBMoviesFilterParams } from "~/types/tmdbApi";
 import { changeUrlParams } from "~/utils/helpers";
@@ -28,13 +29,17 @@ export const PaginationComp: React.FC<PaginationProps> = ({
   const router = useRouter();
   const [selected, setSelected] = useState<filterOption<number | string>[]>([]);
 
-  useEffect(() => {
-    changeUrlParams<ETMDBMoviesFilterParams>(
-      ETMDBMoviesFilterParams.page,
-      selected,
-      router,
-    );
-  }, [selected]);
+  useDebounceEffect(
+    () => {
+      changeUrlParams<ETMDBMoviesFilterParams>(
+        ETMDBMoviesFilterParams.page,
+        selected,
+        router,
+      );
+    },
+    [selected],
+    { wait: 0, runOnMount: false },
+  );
 
   const showLeftEllipsis = currentPage - 1 > totalPagesToDisplay / 2;
   const showRightEllipsis =
