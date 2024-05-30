@@ -12,7 +12,9 @@ import { PaginationComp } from "../_components/paginationSelect";
 export default async function ShowsPage({
   searchParams,
 }: {
-  searchParams: any;
+  searchParams: {
+    [key in ETMDBMoviesFilterParams]?: string;
+  };
 }) {
   const moviesResp = await getShows(searchParams);
   const favorites = await getFavorites();

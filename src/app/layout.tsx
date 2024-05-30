@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import NavMenu from "./_components/navMenu";
 import NextTopLoader from "nextjs-toploader";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "Manzel TMDB",
@@ -33,6 +34,7 @@ export default function RootLayout({
           <NavMenu />
         </div>
         <div className="p-4">{children}</div>
+        <Analytics />
       </body>
     </html>
   );

@@ -28,7 +28,7 @@ export function DropdownSelection({
   filterParam: ETMDBMoviesFilterParams;
   filterOptions: filterOption<string>[];
   selectionPlaceHolder: string;
-  selectedFilters: string;
+  selectedFilters: string | undefined;
 }) {
   const router = useRouter();
   const [selected, setSelected] = useState<filterOption<string>[]>([]);

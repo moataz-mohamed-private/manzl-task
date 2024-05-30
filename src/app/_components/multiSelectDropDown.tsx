@@ -30,7 +30,7 @@ export function MultiSelect({
   filterParam: ETMDBMoviesFilterParams;
   selectionPlaceHolder: string;
   singleSelectMode?: boolean;
-  selectedFilters: string;
+  selectedFilters: string | undefined;
 }) {
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
